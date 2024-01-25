@@ -31,37 +31,17 @@ class SearchForm extends React.Component {
         this.setState({
             input
         })
-        console.log('after handleChange formValid =', this.state.formValid)
     }
 
     async handleSubmit(event) {
-        event.preventDefault();
+      event.preventDefault();
 
-        /* if (this.validate()) {
-            console.log('работает if handleSubmit state = ', this.state);
-            let input = {};
-            input['inn'] = '';
-            input['numberOfDocs'] = '';
-            input['dateStart'] = '';
-            input['dateEnd'] = '';
-
-            this.setState({input:input});
-            console.log('работает обнуление в if handleSubmit state = ', this.state);
-
-        } */
-      
       if(this.state.formValid) {
         const form = event.target;
         const formData = new FormData(form);
         const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
-        // this.setState({formDataJson:formJson});
         const token = localStorage.getItem('token');
-        console.log('token = ', token);
 
-        console.log('итоговое в handleSubmit state = ', this.state);
-        
-        console.log("запускаем fetch в SearchForm");
         let response = await fetch("https://gateway.scan-interfax.ru/api/v1/objectsearch/histograms",
           {
             method: 'POST',
@@ -203,24 +183,11 @@ class SearchForm extends React.Component {
 
       if (response.ok) {
         let json = await response.json();
-        console.log("json after await fetch = ", json);        
         this.setState({resultHistogram:json});
-        console.log('resultHistogram = ', this.state.resultHistogram);
 
       } else {
         alert('Упал сервер API. Такое уже было. Курим!!! Ошибка:' + response.status);
       }
-
-      /* .then(function(response) {
-        console.log('работает первый then')
-        let json = response.json(); //ждем, пока получим ответ сервера в JSON
-        console.log("json = ", json);
-        return json
-      })
-      .then(function(json) {
-        console.log('работает второй then')
-        console.log("json: ", json)
-      }) */
 
       } else {
         console.log('handleSubmit валидация не прошла');
@@ -287,7 +254,6 @@ class SearchForm extends React.Component {
         });
 
         return isValid;
-
     }
 
     render() {

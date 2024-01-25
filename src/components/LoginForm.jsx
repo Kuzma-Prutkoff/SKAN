@@ -27,21 +27,15 @@ class LoginForm extends React.Component {
   }
   
   handleChange(event) {
-    console.log('handleChange working');
-    console.log('before handleChange=', this.state.formValid);
-
     let input = this.state.input;
     input[event.target.name] = event.target.value;
     this.validate();
     this.setState({
         input
     })
-    console.log('after handleChange=', this.state.formValid)
   }
 
   // async пишем, чтобы использовать await fetch внутри handleSubmit
-  // fetch - then - then не работает, в последнем then setState и json теряются,
-  // this там тоже теряется
   async handleSubmit(e) {
     e.preventDefault();
     const formValidated = this.validate()
@@ -56,10 +50,7 @@ class LoginForm extends React.Component {
         const formData = new FormData(form);
 
         const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
 
-        console.log("запускаем fetch в LoginForm");
-          
         let response = await fetch("https://gateway.scan-interfax.ru/api/v1/account/login",
           {
             method: 'POST',
@@ -72,11 +63,9 @@ class LoginForm extends React.Component {
             let json = await response.json();
             console.log("json after await fetch = ", json);
             
-            // в setState помещать необязательно?
             let result = {};
             result['token'] = json.accessToken;
             result['expire'] = json.expire;
-            console.log('result = ', result);
             this.setState({authResult:result});
           
             localStorage.setItem('expire', json.expire);
@@ -93,9 +82,6 @@ class LoginForm extends React.Component {
   }
 
 validate() {
-    console.log('validate is working');
-    console.log('before validate=', this.state.formValid)
-
     let input = this.state.input;
     let errors = {};
     let isValid = true;
@@ -118,8 +104,6 @@ validate() {
         errors: errors,
         formValid: isValid
     });
-
-    console.log('after validate=', this.state.formValid)
 
     return isValid;
 
@@ -164,11 +148,8 @@ validate() {
                       required
                     />
                   <div className='text-danger'>{this.state.errors.password}</div>
-
                 </div>
-
                 <input type='submit' disabled={!this.state.formValid} value='Войти' className='btn btn-success' />
-
               </form>
             </div>
             {!!this.state.authResult.token && (<Navigate to='/' replace={true} />)}

@@ -30,17 +30,14 @@ function HeaderAuthUser() {
     .then(function(response) {
         console.log('работает первый then')
         let json = response.json(); //ждем, пока получим ответ сервера в JSON
-        console.log("json = ", json);
         return json
     })
     .then(function(json) {
         console.log('работает второй then')
         setAccInfo(json.eventFiltersInfo);
-        console.log("accInfo = ", accInfo);
     })
   
-  }, []); //пустой массив позволяет ограничивает частое обновление:
-          // только при монтировании и размонтировании
+  }, []); //пустой массив позволяет ограничивает частое обновление: только при монтировании и размонтировании
 
   return (
      <React.Fragment>

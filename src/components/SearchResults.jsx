@@ -2,16 +2,11 @@ import React, { useEffect, useState } from "react";
 
 function SearchResults(props) {
   const[reply, setReply] = useState([]);
-
   const token = localStorage.getItem('token');
-
   let arrayFormjson = Object.entries(props.formjson);
-  console.log('formjson from SearchResults: ', props.formjson);
-  
-  useEffect(() => {
 
-  console.log("запускаем fetch в SearchResult");      
-  fetch("https://gateway.scan-interfax.ru/api/v1/objectsearch/histograms",
+  useEffect(() => {
+    fetch("https://gateway.scan-interfax.ru/api/v1/objectsearch/histograms",
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json',
@@ -150,15 +145,11 @@ function SearchResults(props) {
           }`
     })
     .then(function(response) {
-        console.log('работает первый then')
         let json = response.json(); //ждем, пока получим ответ сервера в JSON
-        console.log("json = ", json);
         return json
     })
     .then(function(json) {
-        console.log('работает второй then')
         setReply(json);
-        console.log("reply: ", reply)
     })
 
   }, []); 
